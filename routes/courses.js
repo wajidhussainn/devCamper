@@ -1,0 +1,15 @@
+const express = require('express');
+const {getCourses, getCourse, addCourse, updateCourse, deleteCourse} = require('../controllers/coursesController');
+const Course = require('../models/Course');
+const advancedResultsMiddleware = require('../middlewares/advancedResultsMiddleware');
+
+const router = express.Router({mergeParams: true});
+
+
+router.route('/').get(advancedResultsMiddleware(Course, {
+    path: 'bootcamp',
+    select: 'name description'
+}), getCourses).post(addCourse); //already re-routed in bootcamps so it will work
+router.route('/:id').get(getCourse).put(updateCourse).delete(deleteCourse);
+
+module.exports = router;
