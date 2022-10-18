@@ -9,6 +9,8 @@ const connectDB = require('./config/db');
 const colors = require('colors');
 const errorMiddleware = require('./middlewares/errorHandlerMiddleware');
 const fileUpload = require('express-fileupload');
+const cookieParser = require('cookie-parser');
+const auth = require('./routes/auth');
 // load env vars
 dotenv.config({ path: "./config/config.env" });
 
@@ -19,6 +21,8 @@ connectDB();
 // Body Parser
 app.use(express.json())
 
+// Cookie Parser
+app.use(cookieParser());
 
 // const logger = (req, res, next)=>{ //shifted to middlewares folder
 //   // req.hello = 'hello world'; // can set a property on request object like this and can access it inside controllers
@@ -43,6 +47,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 // mount routes
 app.use('/api/v1/bootcamps', bootcamps);
 app.use('/api/v1/courses', courses);
+app.use('/api/v1/auth', auth);
+
 app.get('/', (req, res)=>{
   res.status(200).json({success: true, message: 'API is working'});
 }); 
