@@ -11,6 +11,7 @@ const errorMiddleware = require('./middlewares/errorHandlerMiddleware');
 const fileUpload = require('express-fileupload');
 const cookieParser = require('cookie-parser');
 const auth = require('./routes/auth');
+const users = require('./routes/users');
 // load env vars
 dotenv.config({ path: "./config/config.env" });
 
@@ -48,6 +49,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/api/v1/bootcamps', bootcamps);
 app.use('/api/v1/courses', courses);
 app.use('/api/v1/auth', auth);
+app.use('/api/v1/users', users);
 
 app.get('/', (req, res)=>{
   res.status(200).json({success: true, message: 'API is working'});
