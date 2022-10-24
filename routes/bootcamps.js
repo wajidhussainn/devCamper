@@ -2,6 +2,7 @@ const express = require('express');
 const {getBootCamps, getBootCamp, createBootCamp, updateBootCamp, deleteBootCamp, getBootCampsInRadius, bootcampPhotoUpload} = require('../controllers/bootCampsController')
 // include other resource routers
 const courseRouter = require('./courses');
+const reviewRouter = require('./reviews');
 const advancedResultsMiddleware = require('../middlewares/advancedResultsMiddleware')
 const Bootcamp = require('../models/Bootcamp');
 const {protect, authorize} = require('../middlewares/authMiddleware');
@@ -10,6 +11,7 @@ const router = express.Router();
 
 // re-route other resource routers
 router.use('/:bootcampId/courses', courseRouter);
+router.use('/:bootcampId/reviews', reviewRouter);
 
 // router.get('/', getBootCamps); 
 // router.get('/:id', getBootCamp); 
