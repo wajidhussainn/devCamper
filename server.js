@@ -13,6 +13,12 @@ const cookieParser = require('cookie-parser');
 const auth = require('./routes/auth');
 const users = require('./routes/users');
 const reviews = require('./routes/reviews');
+const mongoSanitize = require('express-mongo-sanitize');
+const helmet = require('helmet');
+const xss = require('xss-clean');
+const rateLimit = require('express-rate-limit');
+const hpp = require('hpp');
+const cors = require('cors');
 // load env vars
 dotenv.config({ path: "./config/config.env" });
 
@@ -41,6 +47,29 @@ if(process.env.NODE_ENV === 'development'){
 
 // File uploading
 app.use(fileUpload());
+
+// sanitize data
+app.use(mongoSanitize());
+
+// Set security headers
+app.use(helmet());
+
+// prevent xss attacks
+app.use(xss());
+
+// Rate limiting
+// limiter code means we can make 100 requests per 10 minutes 
+const limiter = rateLimit({
+  windowMs: 10*60*1000, //10 minutes
+  max: 100
+});
+app.use(limiter);
+
+// prevent http params pollution
+app.use(hpp());
+
+// Enable CORS
+app.use(cors());
 
 // set static folder
 // can access it through browser route localhost:5000/uploads/photoname.jpg
